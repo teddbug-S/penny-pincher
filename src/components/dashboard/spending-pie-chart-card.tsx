@@ -1,11 +1,44 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from "@/components/ui/chart";
-import { PieChart, Pie, Cell, Tooltip } from "recharts";
+import { ChartContainer, ChartTooltip, ChartLegend, ChartLegendContent } from "@/components/ui/chart";
+import { PieChart, Pie, Cell, TooltipProps } from "recharts";
 import { MOCK_TRANSACTIONS, PREDEFINED_CATEGORIES } from "@/lib/constants";
-import type { Transaction } from "@/lib/types";
+import type { Transaction } from "@/lib/types"; // Assuming Category type is also here or imported
+import { formatCurrency } from "@/lib/utils";
 import { useMemo } from "react";
+
+// Define the custom tooltip content component
+const CustomPieChartTooltip = ({ active, payload }: TooltipProps<number, string>) => {
+  if (active && payload && payload.length) {
+    const data = payload[0];
+    // Accessing the original item from chartData via data.payload
+    const originalItem = data.payload as { name: string; value: number; fill: string; icon: React.ElementType };
+    const percentage = data.percent;
+
+    return (
+      <div className="rounded-lg border bg-background p-2.5 text-xs shadow-xl">
+        <div className="flex items-center gap-2 mb-1">
+          <span
+            className="h-2.5 w-2.5 shrink-0 rounded-[2px]"
+            style={{ backgroundColor: originalItem.fill }}
+          />
+          <span className="font-medium text-muted-foreground">{originalItem.name}</span>
+        </div>
+        <div className="font-mono font-medium tabular-nums text-foreground text-right">
+          {formatCurrency(originalItem.value as number)}
+        </div>
+        {percentage !== undefined && (
+          <div className="text-muted-foreground text-right">
+            ({(percentage * 100).toFixed(1)}%)
+          </div>
+        )}
+      </div>
+    );
+  }
+  return null;
+};
+
 
 export function SpendingPieChartCard() {
   const chartData = useMemo(() => {
@@ -19,8 +52,8 @@ export function SpendingPieChartCard() {
       .map(category => ({
         name: category.name,
         value: spendingByCategory[category.id],
-        fill: category.color,
-        icon: category.icon,
+        fill: category.color, // Used by Cell and CustomPieChartTooltip
+        icon: category.icon, // Used by chartConfig
       }));
   }, []);
   
@@ -62,7 +95,7 @@ export function SpendingPieChartCard() {
           <PieChart>
             <ChartTooltip
               cursor={false}
-              content={<ChartTooltipContent hideLabel nameKey="name" />}
+              content={<CustomPieChartTooltip />} // Using custom tooltip
             />
             <Pie
               data={chartData}
@@ -88,7 +121,8 @@ export function SpendingPieChartCard() {
                 <Cell key={`cell-${index}`} fill={entry.fill} />
               ))}
             </Pie>
-            <ChartLegend content={<ChartLegendContent nameKey="name" className="text-xs" />} />
+            {/* Added flex-wrap and justify-start to allow legend items to wrap */}
+            <ChartLegend content={<ChartLegendContent nameKey="name" className="text-xs flex-wrap justify-start items-center" />} />
           </PieChart>
         </ChartContainer>
       </CardContent>

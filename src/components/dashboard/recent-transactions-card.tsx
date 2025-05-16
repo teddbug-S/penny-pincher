@@ -10,6 +10,7 @@ import { ArrowRight } from "lucide-react";
 import { MOCK_TRANSACTIONS, PREDEFINED_CATEGORIES } from "@/lib/constants";
 import type { Transaction } from "@/lib/types";
 import { format } from "date-fns";
+import { formatNumber } from "@/lib/utils";
 
 export function RecentTransactionsCard() {
   const recentTransactions = MOCK_TRANSACTIONS.slice(0, 5); // Show latest 5
@@ -49,7 +50,7 @@ export function RecentTransactionsCard() {
                   </TableCell>
                   <TableCell>{format(transaction.date, "MMM dd, yyyy")}</TableCell>
                   <TableCell className={`text-right font-semibold ${transaction.type === 'income' ? 'text-accent' : 'text-destructive'}`}>
-                    {transaction.type === 'income' ? '+' : '-'}${transaction.amount.toFixed(2)}
+                    {transaction.type === 'income' ? '+' : '-'}${formatNumber(transaction.amount)}
                   </TableCell>
                 </TableRow>
               ))}

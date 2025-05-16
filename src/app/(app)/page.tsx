@@ -4,6 +4,7 @@ import { RecentTransactionsCard } from '@/components/dashboard/recent-transactio
 import { BudgetOverviewCard } from '@/components/dashboard/budget-overview-card';
 import { SpendingPieChartCard } from '@/components/dashboard/spending-pie-chart-card';
 import { DollarSign, TrendingUp, TrendingDown, Activity, PiggyBank } from 'lucide-react'; // Added Activity and PiggyBank
+import { formatCurrency } from '@/lib/utils';
 
 export const metadata: Metadata = {
   title: 'Dashboard | Penny Pincher',
@@ -20,7 +21,7 @@ export default function DashboardPage() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <SummaryCard
           title="Total Income"
-          value={`$${totalIncome.toFixed(2)}`}
+          value={formatCurrency(totalIncome)}
           icon={DollarSign}
           data-ai-hint="income summary"
           trend="positive"
@@ -28,7 +29,7 @@ export default function DashboardPage() {
         />
         <SummaryCard
           title="Total Expenses"
-          value={`$${totalExpenses.toFixed(2)}`}
+          value={formatCurrency(totalExpenses)}
           icon={TrendingDown} // Using TrendingDown for expenses
           data-ai-hint="expense summary"
           trend="negative"
@@ -36,7 +37,7 @@ export default function DashboardPage() {
         />
         <SummaryCard
           title="Net Savings"
-          value={`$${netSavings.toFixed(2)}`}
+          value={formatCurrency(netSavings)}
           icon={PiggyBank} // Using PiggyBank for savings
           data-ai-hint="savings summary"
           trend={netSavings > 0 ? "positive" : "negative"}

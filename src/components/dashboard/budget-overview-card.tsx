@@ -8,6 +8,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { MOCK_BUDGET_GOALS, MOCK_TRANSACTIONS, PREDEFINED_CATEGORIES } from "@/lib/constants";
 import type { BudgetGoal, Transaction } from "@/lib/types";
+import { formatNumber } from "@/lib/utils";
 
 export function BudgetOverviewCard() {
   const getCategoryDetails = (categoryId: string) => {
@@ -49,7 +50,7 @@ export function BudgetOverviewCard() {
                       <span className="text-sm font-medium text-foreground">{category.name}</span>
                     </div>
                     <span className={`text-sm font-semibold ${isOverBudget ? 'text-destructive' : 'text-muted-foreground'}`}>
-                      ${spentAmount.toFixed(2)} / ${goal.amount.toFixed(2)}
+                      ${formatNumber(spentAmount)} / ${formatNumber(goal.amount)}
                     </span>
                   </div>
                   <Progress value={progress} className={isOverBudget ? "[&>div]:bg-destructive" : ""} />
