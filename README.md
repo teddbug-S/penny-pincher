@@ -1,6 +1,4 @@
-# Firebase Studio
-
-## Personal Finance Dashboard with AI Assistant
+# Personal Finance Dashboard with AI Assistant
 
 This project is a comprehensive personal finance dashboard built with Next.js, offering users the ability to track income and expenses, manage budgets, categorize transactions, and gain insights into their spending habits. A key feature is the integrated AI assistant, powered by Genkit, which can provide intelligent suggestions and analysis related to personal finance.
 
