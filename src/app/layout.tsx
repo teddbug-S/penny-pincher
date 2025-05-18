@@ -12,6 +12,9 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: 'Penny Pincher',
   description: 'Manage your finances with Penny Pincher.',
+  icons: {
+    icon: '/favicon.ico', // This line specifies the icon for the browser tab
+  },
 };
 
 export default function RootLayout({
